@@ -8,7 +8,7 @@ Settings = {
 		WLParty  = {"OhGeniusZ"},				-- Username(s) to whitelist. Example: {"Player1","Player2","Player3"} | Will also accept {} for solo
 		LobbyType = "Dungeon",				-- "Dungeon" or "BossRaid"
 	--> [ Dungeon ]
-		MapName = "Aquatic Temple",
+		MapName = "Winter Outpost",
 		Difficulty = "Nightmare",
 		Hardcore = true,
 		WaveDefense = false,				-- Keep this false. (Wave defence doesn't currently work on Blake's Autofarm)
