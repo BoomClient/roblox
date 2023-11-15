@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
-wait(20)
+wait(8)
 local player = game:GetService("Players").LocalPlayer
 local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
 local desiredPlaceID = 14363263080
