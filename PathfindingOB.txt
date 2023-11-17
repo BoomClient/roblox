@@ -14,6 +14,7 @@ local function moveAndWait(position)
 end
 
 if currentPlaceID == desiredPlaceID then
+print("start")
 moveAndWait(Vector3.new(30, 9, 156))
 moveAndWait(Vector3.new(74, 10, 126))
 moveAndWait(Vector3.new(124, 15, 118))
