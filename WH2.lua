@@ -1693,14 +1693,13 @@ local me = plrs.LocalPlayer;
             };
           },
         };
-        wait(2)
+        wait(5)
         print('doing webhook')
         webhookLocals.endingInventory = getPlayerInvy(game.Players.LocalPlayer)
         getNewItems(webhookLocals.startingInventory.weapons, webhookLocals.endingInventory.weapons)
         getNewItems(webhookLocals.startingInventory.abilities, webhookLocals.endingInventory.abilities)
         getNewItems(webhookLocals.startingInventory.chests, webhookLocals.endingInventory.chests)
         getNewItems(webhookLocals.startingInventory.helmets, webhookLocals.endingInventory.helmets)
-        wait(3)
         sendWebhookItem()
         print('done webhook')
       end
