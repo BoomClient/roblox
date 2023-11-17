@@ -1700,6 +1700,7 @@ local me = plrs.LocalPlayer;
         getNewItems(webhookLocals.startingInventory.abilities, webhookLocals.endingInventory.abilities)
         getNewItems(webhookLocals.startingInventory.chests, webhookLocals.endingInventory.chests)
         getNewItems(webhookLocals.startingInventory.helmets, webhookLocals.endingInventory.helmets)
+        wait(3)
         sendWebhookItem()
         print('done webhook')
       end
