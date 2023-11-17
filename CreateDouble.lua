@@ -49,7 +49,7 @@ if currentPlaceID == desiredPlaceID then
 	game:GetService("ReplicatedStorage"):WaitForChild("remotes"):WaitForChild("addPlayerToWhitelist"):FireServer("OhGeniusZ4")
 	game:GetService("ReplicatedStorage"):WaitForChild("remotes"):WaitForChild("addPlayerToWhitelist"):FireServer("OhGeniusZ5")
 	game:GetService("ReplicatedStorage"):WaitForChild("remotes"):WaitForChild("addPlayerToWhitelist"):FireServer("OhGeniusZ6")
-	wait(30)
+	wait(25)
 	SRemote("startDungeon")
 else
     print('Incorrect')
