@@ -1,6 +1,6 @@
 repeat wait() until game:IsLoaded()
 wait(8)
-local desiredPlaceID = 2414851778
+local desiredPlaceID = 14363264964
 local currentPlaceID = game.PlaceId
 -- [ CONFIG ]
 Settings = {
