@@ -1,3 +1,4 @@
+print("webhoomstart")
 -- AI Settings
 -- AI Behavioral Settings
 _G.abilityRange = 55 -- the target must be atleast 65 studs away before using abilities
