@@ -1679,7 +1679,7 @@ local me = plrs.LocalPlayer;
 
     local function webHookOnEnd()
       if _G.webhookEnabled then
-        webhookLocals.timeLeft = convertToHMS(workspace.timeLeft.Value)
+        webhookLocals.timeLeft = convertToHMS(game.Players.LocalPlayer.Character.Name)
         webhookLocals.itemsEarned = {
           {
             color = '0';
