@@ -1684,11 +1684,11 @@ local me = plrs.LocalPlayer;
           {
             color = '0';
             author = {
-              name = '';
+              name = 'A';
             };
             fields = {
               {
-                name = "C",
+                name = "A",
                 value = webhookLocals.timeLeft
               },
             };
