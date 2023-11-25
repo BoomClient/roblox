@@ -1684,10 +1684,11 @@ local me = plrs.LocalPlayer;
           {
             color = '0';
             author = {
-              name = 'Genius Notification';
+              name = '';
             };
             fields = {
               {
+                name = "C",
                 value = webhookLocals.timeLeft
               },
             };
