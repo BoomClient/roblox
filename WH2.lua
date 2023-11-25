@@ -1688,7 +1688,6 @@ local me = plrs.LocalPlayer;
             };
             fields = {
               {
-                name = "ClearTime => ",
                 value = webhookLocals.timeLeft
               },
             };
