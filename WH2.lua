@@ -15,110 +15,25 @@ _G.showPath = true
 -- AI Performance
 _G.extremelyFast = true -- makes the ai think exponentially faster, but might lag for peopel
 -- Lobby Settings
-_G.maxWaitTimeInLobby = 0 -- this is how long itll randomly walk around for before going into a dungeon 
-_G.collect_daily_reward = true
-
--- Dungeon Choosing Settings
--- Normal Dungeon Settings
-_G.auto_join_dungeon = true
-_G.dungeon = "Volcanic Chambers"
-_G.difficulty = "Nightmare"
-_G.hardcore = false
-_G.auto_choose_dungeon_and_difficulty = false
-_G.autoexec_wait_time_secs = 0
-
--- Boss Raid Settings
-_G.boss_raid = false
-_G.auto_choose_raid_boss_tier = true
-_G.boss_raid_tier = 1
-
--- Wave Defense Settings
-_G.wavedefense = false
-
--- Easter Event Settings
-_G.easter_enable = false
-_G.eggClass = "Mage"
-
--- Party Settings
--- Hosting Settings
-_G.wait_for_friends = false
-_G.friends = {"Friend 1", "Friend 2"}
-
--- Joining Settings
-_G.wait_for_friends_to_host = false
-_G.host_name = "Name of the host"
-
--- Multi-Instance Settings
-_G.multi_roblox = false
-_G.host_name_key = {"roblox account 1 name"} -- this account creates parties
-_G.name_key_list = { 
-  {"roblox account 2 name"},
-  {"roblox account 3 name"},
-}
-
--- Autosell Settings
-_G.autosell = false
-_G.testSell = false -- prints out what items would've been sold instead of selling the items
-_G.keep_items_level_requirement = 156  -- keeps items that level requirements are above this number
-_G.keep2spells = true -- sell spells extra spells if you have 2 already
-_G.keep_items_from_class = {
-  ["physical"] = false, 
-  ["mage"] = false,
-} --[[ only keeps items that fall within the given class ]]
-_G.keeprarities = {
-  ['legendary'] = true,
-  ['epic'] = false,
-  ['rare'] = false,
-  ['uncommon'] = false,
-  ['common'] = false,
-}
-_G.itemlist ={ 
-
-  --Volcanic Chambers Armor
-  ["Lava King's Warrior Helmet"] = {"rare","epic"},
-  ["Lava King's Warrior Armor"] = {"rare","epic"},
-  ["Lava King's Mage Helmet"] = {"rare","epic"},
-  ["Lava King's Mage Armor"] = {"rare","epic"},
-  ["Molten Forged Mage Helmet"] = {"epic"},
-  ["Molten Forged Mage Armor"] = {"epic"},
-  ["Molten Forged Warrior Helmet"] = {"epic"},
-  ["Molten Forged Warrior Armor"] = {"epic"},
-  -- Warrior Skills
-  ["Twin Slash"] = {"epic"},
-  ["Enhanced Inner Rage"] = {"legendary"},
-  ["Lava Barrage"] = {"epic"},
-  ["Blade Fall"] = {"epic"},
-  -- Others
-
-} 
-
--- Auto Upgrade Settings
-_G.auto_stat_upgrade = false
-_G.stat = "physicalPower" -- "physicalPower", "stamina", "spellPower"
-_G.auto_equip_gear = false
-_G.equip_type = "physical" -- "physical", "spell"
-_G.auto_upgrade_equip = false
-_G.autoEquipSpell = false
-_G.spellType = "spell" -- "physical", "spell"
 
 -- ANTI LAG SETTINGS
 _G.wall_transparency = .5
 _G.optimize_mobs = false
 _G.destroy_map = true
-_G.del_armor= true
-_G.del_weapon = true
-_G.hide_projectiles = true
+_G.del_armor= false
+_G.del_weapon = false
+_G.hide_projectiles = false
 _G.loadSlow = false
 _G.fpsBoost = false
 
 -- UI Settings
 _G.edit_ui = true
 _G.UI_portait_image = 'rbxassetid://3357197641'
-_G.UI_health = "health"
-_G.UI_money = "money"
-_G.UI_name = "name"
-_G.UI_xp = "xp"
-_G.UI_lvl = "lvl"
+_G.UI_health = ""
+_G.UI_money = ""
+_G.UI_name = ""
+_G.UI_xp = ""
+_G.UI_lvl = ""
 
 -- Discord Webhook
 _G.webhookEnabled = true
