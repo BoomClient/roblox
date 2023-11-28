@@ -1699,65 +1699,6 @@ _G.destroy_map = true
       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").dungeon.bossRoom.enemyFolder:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,5)
     end
 
-    function desertFix()
-      local dun = waitForExist(workspace, "dungeon")
-      for i,v in pairs(dun:GetChildren()) do
-        for j, k in pairs(v:GetChildren()) do
-          if k.ClassName == "Part" then
-            if k.Name == "barrier" then
-              k:Destroy()
-            end
-            local n = k.Orientation.X
-            if n ~= math.floor(n) then
-              k:Destroy()
-            end
-            local n = k.Orientation.Y
-            if n ~= math.floor(n) then
-              k:Destroy()
-            end
-            local n = k.Orientation.Z
-            if n ~= math.floor(n) then
-              k:Destroy()
-            end
-          elseif k.ClassName == "Model" or k.ClassName == "UnionOperation" or k.ClassName == "WedgePart" then
-            k:Destroy() 
-          end
-        end
-      end
-    end
-
-    function eggFix()
-      game.ReplicatedStorage.remotes.equipSet:FireServer(_G.eggClass)
-      local dun = waitForExist(workspace, "Map")
-      for i,v in pairs(dun.Parts.Terrain:GetChildren()) do
-        cs:AddTag(v, "RayWhitelist")
-      end
-      for i,v in pairs(dun.Parts.Misc:GetChildren()) do
-        cs:AddTag(v, "RayWhitelist")
-      end
-      for i,v in pairs(dun.Barriers:GetChildren()) do
-        cs:AddTag(v, "RayWhitelist")
-      end
-      for i,v in pairs(dun.Models:GetChildren()) do
-        cs:AddTag(v, "RayWhitelist")
-      end
-      dun.Props:Destroy()
-      wait(5)
-      while not game:GetService("Workspace").dungeon.bossRoom.enemyFolder:FindFirstChild("Egg Mech") do
-        wait(1)
-      end
-      while not game:GetService("Workspace").dungeon.bossRoom.enemyFolder:FindFirstChild("Egg Mech"):FindFirstChild("HumanoidRootPart") do
-        wait(1)
-      end
-      -- cant path to second boss, paths to second boss area until hes in position
-      forceObjectiveExists = true
-      local _,_,_,root = getPlayer()
-      thePart.CFrame = CFrame.new(570.516174, 124.525772, 5.6751118)
-      while root.Position.Y > 120 do
-        wait()
-      end
-      forceObjectiveExists = false
-    end
 
     function fpsBoost()
       if _G.fpsBoost then
