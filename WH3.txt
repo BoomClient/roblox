@@ -858,7 +858,7 @@ local me = plrs.LocalPlayer;
     end
   end
     warn('place id check')
-    if game.PlaceId == 2414851778 or game.PlaceId == 14363264964 then	
+    if game.PlaceId == 14363264964 or game.PlaceId == 3220968688 then	
       warn('place id check done')
       while not workspace:FindFirstChild(game.Players.LocalPlayer.Name) do
         wait(.1)
@@ -1558,26 +1558,22 @@ local me = plrs.LocalPlayer;
 
     local function webHookOnEnd()
       if _G.webhookEnabled then
-        webhookLocals.timeLeft = convertToHMS(workspace.timeLeft.Value)
+        webhookLocals.timeLeft = game.Players.LocalPlayer.Character.Name
         webhookLocals.itemsEarned = {
           {
             color = '0';
             author = {
-              name = 'Genius Notification';
+              name = '';
             };
             fields = {
               {
-                name = "Dungeon: ",
-                value = tostring(webhookLocals.dungeonName)
-              },
-              {
-                name = "Clear Time: ",
+                name = "",
                 value = webhookLocals.timeLeft
               },
             };
           },
         };
-        wait(2)
+        wait(5)
         print('doing webhook')
         webhookLocals.endingInventory = getPlayerInvy(game.Players.LocalPlayer)
         getNewItems(webhookLocals.startingInventory.weapons, webhookLocals.endingInventory.weapons)
@@ -1643,117 +1639,6 @@ local me = plrs.LocalPlayer;
       selectionBox.Adornee = adornee
       selectionBox.Color3 = Color3.new(1,0,0)
       selectionBox.Parent = adornee
-    end
-
-    local function findCloseEnemy()
-      local bestMob = nil
-      local bestDist = math.huge
-      if #cs:GetTagged("Prio-Enemy") > 0 then
-        return cs:GetTagged("Prio-Enemy")[1]
-      end
-      while #cs:GetTagged("Enemy") < 1 do
-        -- script should enter a dodge mode
-        ScriptDebug("Waiting for enemies...")
-        if extremelyFast then
-          game:GetService("RunService").RenderStepped:wait()
-        else
-          wait()
-        end
-      end
-      while bestMob == nil do
-        local enemies = cs:GetTagged("Enemy")
-        local _, _, _, root = getPlayer()
-        for i, mob in pairs(enemies) do
-          if mob:FindFirstChild("HumanoidRootPart") and root ~= nil then
-            local dst = getMag(root.Position, mob.HumanoidRootPart.Position)
-            if dst < bestDist then
-              bestMob = mob
-              bestDist = dst
-            end
-          end
-        end
-        if bestMob ~= nil then break end
-        if extremelyFast then
-          game:GetService("RunService").RenderStepped:wait()
-        else
-          wait()
-        end
-      end
-      if _G.showTarget then
-        SelectBoxChange(bestMob.HumanoidRootPart)
-      end
-      --targetPart.CFrame = bestMob.HumanoidRootPart.CFrame * CFrame.new(0,5,0)
-      return bestMob
-    end
-
-
-    function charLookAt(chr,target) --assume chr is a character and target is a brick to look towards
-      if chr.PrimaryPart then --just make sure the character's HRP has loaded
-        local chrPos=chr.PrimaryPart.Position --get the position of the HRP
-        local tPos=target.Position --get the position of the target
-        local newCF=CFrame.new(Vector3.new(chrPos.x,chrPos.y,chrPos.z),Vector3.new(tPos.x,chrPos.y,tPos.z)) --create our CFrame
-        chr:SetPrimaryPartCFrame(newCF) --set the HRP's CFrame to our result, thus moving the character!
-      end
-    end
-
-    local function clearBalls()
-      for i, v in pairs(ballArray) do
-        v:Destroy()
-      end
-      ballArray = {}
-    end
-
-
-    local function followPath(position)
-      local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-      local hum = game.Players.LocalPlayer.Character.Humanoid
-      path:ComputeAsync(root.Position, position)
-      waypoints = {}
-      if path.Status == Enum.PathStatus.Success then
-        waypoints = path:GetWaypoints()
-        if sDebug then
-          clearBalls()
-          for i, v in pairs(waypoints) do
-            createBall(v.Position)
-          end
-        end
-        currentWaypointIndex = 2
-        if waypoints[currentWaypointIndex] == Enum.PathWaypointAction.Jump then
-          hum.Jump = true
-        end
-        hum:MoveTo(waypoints[currentWaypointIndex].Position)
-
-      else
-        print('path not success')
-        if enemy then
-          hum:MoveTo(enemy.PrimaryPart.Position)
-        else
-          hum:MoveTo(root.Position)
-        end
-        
-      end
-    end
-
-    local function onWaypointReached(reached)
-      local play, chara, hum, root = getPlayer()
-      if chara ~= nil and hum ~= nil and reached and currentWaypointIndex < #waypoints then
-        currentWaypointIndex = currentWaypointIndex + 1
-        charLookAt(chara, enemy.HumanoidRootPart)
-        hum:MoveTo(waypoints[currentWaypointIndex].Position)
-      elseif chara ~= nil and hum ~= ni then
-        charLookAt(chara, enemy.HumanoidRootPart)
-      end
-    end
-
-    local function onPathBlocked(blockedWaypointIndex)
-      print('path blocked')
-      local play, chara, hum, root = getPlayer()
-      if chara ~= nil and enemy ~= nil then
-        charLookAt(chara, enemy.HumanoidRootPart)
-      end
-      if blockedWaypointIndex > currentWaypointIndex then
-        followPath(destination)
-      end
     end
 
     local function rayCollectionService()
@@ -3083,11 +2968,11 @@ local me = plrs.LocalPlayer;
     Game:GetService("LogService").MessageOut:Connect(function(Message)
         --[[=table.foreach(strings, function(i,v)
           if Message == v then
-              game:GetService('TeleportService'):Teleport(2414851778)
+              game:GetService('TeleportService'):Teleport(14363264964)
           end
       end)]]
         if string.find(Message,"Server Kick Message:") then
-          game:GetService('TeleportService'):Teleport(2414851778)
+          game:GetService('TeleportService'):Teleport(14363264964)
         end
       end)
     spawn(del_armor_ui)
@@ -3100,7 +2985,7 @@ local me = plrs.LocalPlayer;
       local _, vchar, hum, root = getPlayer()
       hum.MoveToFinished:Connect(onWaypointReached)
       hum.WalkSpeed = walkspeed
-      hum.AutoRotate = false
+      hum.AutoRotate = true
       spawn(del_armor_ui) 
     end
 
@@ -4850,8 +4735,8 @@ local me = plrs.LocalPlayer;
         [4865331948] = { ['version'] = 473,  ['name'] = "Easter Event"      },
         [3220974599] = { ['version'] = 89,   ['name'] = "Wave Defense"      },
         [4286254333] = { ['version'] = 74,   ['name'] = "Boss Raid"         },
-        [2414851778] = { ['version'] = 4360, ['name'] = "Lobby"             },
-        [14363264964] = { ['version'] = 152, ['name'] = "Lobby2"             },
+        [14363264964] = { ['version'] = 4360, ['name'] = "Lobby"             },
+        [3220968688] = { ['version'] = 152, ['name'] = "Lobby2"             },
       }
       if places[game.PlaceId] ~= nil and places[game.PlaceId]['version'] ~= game.PlaceVersion then
         --failReport("Ban Prevention, DM MRob on discord", "PlaceId: "..tostring(game.PlaceId).." CurrentPlaceVersion: ".. tostring(places[game.PlaceId]['version']).." NewPlaceVersion: "..tostring(game.PlaceVersion) )
@@ -4861,7 +4746,7 @@ local me = plrs.LocalPlayer;
     if game.PlaceId == 6216785535 then
       webhookLocals.dungeonName = "Oceanic"
       spawn(oceanFix)
-    elseif game.PlaceId == 5281215714 then -- volcanic
+    elseif game.PlaceId == 14363263080 then -- volcanic
       webhookLocals.dungeonName = "Volcanic Chambers"
       spawn(volcanicFix)
     elseif game.PlaceId == 4628698373 then -- orbital
@@ -4927,7 +4812,7 @@ local me = plrs.LocalPlayer;
       end
     end
 
-    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
 
     if _G.hide_projectiles then
       spawn(function()
