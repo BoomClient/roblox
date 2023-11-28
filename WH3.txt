@@ -1,24 +1,5 @@
 print("webhoomstart2")
--- ANTI LAG SETTINGS
-_G.wall_transparency = .5
-_G.optimize_mobs = true
 _G.destroy_map = true
-_G.del_armor= false
-_G.del_weapon = false
-_G.hide_projectiles = true
-_G.loadSlow = false
-_G.fpsBoost = true
-
--- UI Settings
-_G.edit_ui = true
-_G.UI_portait_image = 'rbxassetid://3357197641'
-_G.UI_health = "EZ"
-_G.UI_money = "EZ"
-_G.UI_name = "EZ"
-_G.UI_xp = "EZ"
-_G.UI_lvl = "EZ"
-
--- Discord Webhook
 _G.webhookEnabled = true
 _G.webhookLink = "https://discord.com/api/webhooks/1164846575546277908/XpfIML8ukwnnMOi3Kllr16xZpo9_beazdVpugauYuP8N5k3Ft_rLN25CybrrDEkPnf43"
 
