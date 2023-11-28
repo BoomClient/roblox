@@ -3106,7 +3106,7 @@ local me = plrs.LocalPlayer;
       local _, vchar, hum, root = getPlayer()
       hum.MoveToFinished:Connect(onWaypointReached)
       hum.WalkSpeed = walkspeed
-      hum.AutoRotate = false
+      hum.AutoRotate = true
       spawn(del_armor_ui) 
     end
 
@@ -4933,7 +4933,7 @@ local me = plrs.LocalPlayer;
       end
     end
 
-    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
 
     if _G.hide_projectiles then
       spawn(function()
