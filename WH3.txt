@@ -1185,132 +1185,6 @@ local me = plrs.LocalPlayer;
       return part
     end
 
-    local function createHitBoxPart(size, cframe, obj)
-      local part = Instance.new("Part")
-      cs:AddTag(part, "RayIgnore")
-      part.Size = size
-      part.CFrame = cframe
-      part.Parent = obj
-      part.Name = "enemyRadius"
-      part.Anchored = false
-      part.CanCollide = false
-      part.Material = "SmoothPlastic"
-      part.Transparency = stuffTransparency
-      part:GetPropertyChangedSignal("Transparency"):Connect(antiTransChange)
-      part.ChildAdded:Connect(antiChildChange)
-      part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
-      local weld = Instance.new("WeldConstraint")
-      if obj.ClassName == "Model" then
-        weld.Part1 = obj.PrimaryPart
-      else
-        weld.Part1 = obj  
-      end
-      weld.Part0 = part
-      weld.Parent = obj
-      return part
-    end
-
-    local function addHitBox(obj, size, shape)
-      local psize, cframe
-      if shape == nil then
-        local t = {
-          {size, size}, {0, size}, {-size, size},
-          {size, 0}, {-size, 0},
-          {size, -size}, {0, -size}, {-size, -size},
-        }
-        for i,v in pairs(t) do
-          psize = Vector3.new(1, 1, (size))
-          local pos1 = (obj.PrimaryPart.CFrame * CFrame.new(v[1],0,v[2])).Position
-          cframe =  CFrame.new(pos1, obj.PrimaryPart.Position)
-          cframe = cframe * CFrame.new(0,0,(-size/2) + 2)
-          createHitBoxPart(psize, cframe, obj)
-        end
-      elseif shape =="square" then -- this is for when things shoot ball projectiles
-        psize = Vector3.new(size, size, size)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = obj.PrimaryPart.CFrame
-        else
-          cframe = obj.CFrame
-        end
-        createHitBoxPart(psize, cframe, obj)
-      elseif shape == "rectangle" then
-        psize = Vector3.new(size, size, size) -- create square around projectile
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = obj.PrimaryPart.CFrame
-        else
-          cframe = obj.CFrame
-        end
-        createHitBoxPart(psize, cframe, obj)
-
-        psize = Vector3.new(1, size, size*2)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then -- add the pointy thing
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = obj.PrimaryPart.CFrame * CFrame.new(0, 0, (size - 5) * -1)
-        else
-          cframe = obj.CFrame * CFrame.new(0, 0, (size - 5) * -1)
-        end
-        createHitBoxPart(psize, cframe, obj)
-
-      elseif shape == "rectanglev2" then
-        psize = Vector3.new(size, size, size)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = obj.PrimaryPart.CFrame
-        else
-          cframe = obj.CFrame
-        end
-        createHitBoxPart(psize, cframe, obj)
-
-        psize = Vector3.new(size, size, size)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = (obj.PrimaryPart.CFrame * CFrame.new(0, 0, (size - 10) * -1)) * CFrame.Angles(math.rad(45), 0,math.rad(90))
-        else
-          cframe = (obj.CFrame * CFrame.new(0, 0, (size - 10) * -1))* CFrame.Angles(math.rad(45), 0,math.rad(90))
-        end
-        createHitBoxPart(psize, cframe, obj)
-      elseif shape == "rectanglev3" then
-        psize = Vector3.new(size, size, size)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = obj.PrimaryPart.CFrame
-        else
-          cframe = obj.CFrame
-        end
-        createHitBoxPart(psize, cframe, obj)
-
-        psize = Vector3.new(size -5 , size - 5, size - 5)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = (obj.PrimaryPart.CFrame * CFrame.new(0, 0, (size - 5) * -1)) * CFrame.Angles(0, math.rad(45),0)
-        else
-          cframe = (obj.CFrame * CFrame.new(0, 0, (size - 5) * -1))* CFrame.Angles(0, math.rad(45),0)
-        end
-        createHitBoxPart(psize, cframe, obj)
-
-      elseif shape == "rectangle-2" then -- rectnagle with no offset
-        psize = Vector3.new(size, size, size)
-        cframe = CFrame.new(0,0,0)
-        if obj.ClassName == "Model" then
-          obj:WaitForChild("PrimaryPart", .5)
-          cframe = obj.PrimaryPart.CFrame
-          cframe = cframe * CFrame.Angles(0, math.rad(45), 0)
-        else
-          cframe = obj.CFrame
-          cframe = cframe * CFrame.Angles(0, math.rad(45), 0)
-        end
-        createHitBoxPart(psize, cframe, obj)
-      end
-    end
 
     local function cleanMobUp(t)
       if _G.optimize_mobs then
@@ -1328,102 +1202,6 @@ local me = plrs.LocalPlayer;
       end
     end
 
-    local function _initHitBox(instance)
-      if instance.ClassName == "Model" then
-        while instance.PrimaryPart == nil do wait() end
-        while not instance:FindFirstChild(instance.PrimaryPart.Name) do wait() end
-        instance:WaitForChild("HumanoidRootPart")
-        instance:WaitForChild("enemyStyle", 1.5)
-        if not instance:FindFirstChild("enemyStyle") then print('no enemy style') return end
-        local mobType = instance.enemyStyle.Value
-        if mobType == "mob" or mobType == "ranged" or mobType == "melee" or mobType == "burly" then --f if mob
-          if eggEvent then -- egg event only has one tag on each mob
-            while (#cs:GetTags(instance) == 0) do
-              wait(.1)
-            end
-          else
-            while (#cs:GetTags(instance) < 2) do -- normally each mob has two
-              table.foreach(cs:GetTags(instance), print)
-              ScriptDebug("waiting for mob to add tag" )
-              wait(.1)
-            end
-          end
-          cs:AddTag(instance, "Enemy")
-          if _G.doInstakill then
-            if instance:FindFirstChild("Humanoid") and instakillTable[instance.Name] then
-              instance.Humanoid.Health = 0
-            end
-          end
-          if mobType ~= "ranged" then
-            if game.PlaceId == 5281215714 then -- if volcanic mob
-              if instance.Name == "Explosive Lava Walker" or instance.Name == "Aggressive Lava Walker" then
-                addHitBox(instance, 8.5)
-              end
-            elseif game.PlaceId == 6216785535 then
-              if instance.Name == "Temple Guard" then
-                addHitBox(instance, 3)
-              end                
-            else
-              addHitBox(instance, 7)
-            end
-          end
-        else -- if not mob then
-          if eggEvent then -- egg event has 0 tagso n boss
-            while #cs:GetTags(instance) ~= 0 do
-              wait()
-            end
-          else
-            while #cs:GetTags(instance) < 1 do
-              wait()
-            end          
-          end
-          if _G.doInstakill then
-            if instance:FindFirstChild("Humanoid") and instakillTable[instance.Name] then
-              instance.Humanoid.Health = 0
-            end
-          end
-          cs:AddTag(instance, "Enemy")             
-        end
-      end  
-    end
-
-    local function initHitBox()
-      if workspace:FindFirstChild("tier") or workspace:FindFirstChild("currentWave") then -- boss raid or wave defense ( they work the same )
-        workspace.enemies.ChildAdded:Connect(function(instance)
-            if instance.Name == "Stone Warrior" then -- instakill in mob folder
-              instance:WaitForChild("Humanoid")
-              addHitBox(instance, 5)
-              wait(1)
-              instance.Humanoid.Health = 0
-            else
-              _initHitBox(instance)
-              cleanMobUp(instance)
-            end
-          end)
-      else
-        for i,room in pairs(workspace.dungeon:GetChildren()) do -- normal dungeon handler
-          if room:FindFirstChild("enemyFolder") then
-            local efold = room:FindFirstChild("enemyFolder")
-            if efold then
-              local e = efold:FindFirstChildOfClass("Model")
-              if e then
-                if e:FindFirstChild("Humanoid") then -- if folder already has mobs then add hit box
-                  wait(.5)
-                  for i,instance in pairs(efold:GetChildren()) do
-                    _initHitBox(instance)
-                    cleanMobUp(instance)
-                  end
-                end
-              end
-              efold.ChildAdded:Connect(function(instance) -- all future folders, if mob spawned, give hitbox
-                  _initHitBox(instance)
-                  cleanMobUp(instance)
-                end)
-            end
-          end
-        end
-      end
-    end
 
     local projNameList = {} -- important
     local enemyProjNameList = {}
@@ -1761,14 +1539,6 @@ local me = plrs.LocalPlayer;
     local projNameTemp = nil
     local projNameParentTemp = nil
 
-    local function checkIfProjectile(obj)
-      projNameTemp = obj.Name
-      if projNameTemp == "enemyRadius" then
-        return true
-      end
-      if obj.Transparency == 1 then
-        return false
-      end
 
       checkProjResult = whiteListBlackList[projNameTemp]
       if checkProjResult ~= nil then
@@ -2231,15 +2001,6 @@ local me = plrs.LocalPlayer;
     end
 
     -- secondBossGeyser
-    local function findClosestRockPile(i)
-      local a = workspace.secondBossRockPile2.Union
-      local b = workspace.secondBossRockPile1.Union
-      if (a.Position - i.PrimaryPart.Position).Magnitude < (b.Position - i.PrimaryPart.Position).Magnitude then
-        return a
-      else
-        return b
-      end
-    end
 
 
 
@@ -2250,21 +2011,6 @@ local me = plrs.LocalPlayer;
       gyzerLoopRunning = false,
     }
 
-    local function createTentacleAttack(tentacle)
-      local r = game.Players.LocalPlayer.Character.HumanoidRootPart
-      local t = tentacle.PrimaryPart
-      local part = Instance.new("Part")
-      part.CFrame = CFrame.new(part.Position, r.Position)
-      part.CFrame = t.CFrame * CFrame.new(0,10,-60)
-      part.Size = Vector3.new(14,5,128)
-      part.Parent = workspace
-      part.CanCollide = false
-      part.Transparency = 1
-      part.Anchored = true
-      part.Name = "enemyRadius"
-      wait(3)
-      part:Destroy()        
-    end
 
 
     workspace.ChildAdded:Connect(function(instance)
@@ -2742,13 +2488,6 @@ local me = plrs.LocalPlayer;
     local Players = game:GetService("Players")
     game.Players.LocalPlayer.Character.Humanoid.MoveToFinished:Connect(onWaypointReached)
 
-    local function onCharacterAdded(character)
-      local _, vchar, hum, root = getPlayer()
-      hum.MoveToFinished:Connect(onWaypointReached)
-      hum.WalkSpeed = walkspeed
-      hum.AutoRotate = false
-      spawn(del_armor_ui) 
-    end
 
     game.Players.LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
 
