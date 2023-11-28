@@ -1711,15 +1711,7 @@ local me = plrs.LocalPlayer;
     end
 
 
-    local function lookAt(target, eye)
-      local forwardVector = (target - eye).Unit
-      local upVector = Vector3.new(0, 1, 0)
-      -- Remember the right-hand rule
-      local rightVector = forwardVector:Cross(upVector)
-      local upVector2 = rightVector:Cross(forwardVector)
-
-      return CFrame.fromMatrix(eye, rightVector, upVector2)
-    end
+  
 
     function round(num)
       return math.floor(num + 0.5)
@@ -1731,28 +1723,7 @@ local me = plrs.LocalPlayer;
 
     local oldTargetPos = Vector3.new(0,0,0)
     local targetPos = Vector3.new(1,0,0)
-    local function makePath(target, value)
-      if value == nil then value = false end
-      local play, chara, hum, root = getPlayer()
-      if target.ClassName == "Model" then
-        targetPos = roundVector(target.PrimaryPart.Position)
-      else
-        targetPos = roundVector(target.Position)
-      end
-      if hum ~= nil and root ~= nil then
-        oldTargetPos = targetPos
-        destination = targetPos
-        if value then
-          if enemy ~= nil then
-            charLookAt(chara, enemy.PrimaryPart)
-          end
-          spawn(clearBalls)
-          hum:MoveTo(targetPos)
-        else
-          followPath(targetPos)
-        end
-      end
-    end
+  
 
     function visualRay(long)
       local p = Instance.new("Part")
@@ -1784,7 +1755,6 @@ local me = plrs.LocalPlayer;
         local p = visualRay(.005)
         local distance = (start - hitPosition).Magnitude
         p.Size = Vector3.new(0.3, 0.3, distance)
-        p.CFrame = lookAt(start, hitPosition)*CFrame.new(0, 0, -distance/2)
       end]]
 
       return hitPosition, part
@@ -2638,7 +2608,6 @@ local me = plrs.LocalPlayer;
               partHitBox.Anchored = true
               partHitBox.CanCollide = false
               partHitBox.Transparency = 1
-              partHitBox.CFrame = CFrame.lookAt(Origin, instance.Position)
               partHitBox.Size = Vector3.new(instance.Size.X + 5, 5, 800)
               partHitBox.Name = "enemyRadius"
               partHitBox.Parent = workspace
