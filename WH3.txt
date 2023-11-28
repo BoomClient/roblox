@@ -3,8 +3,8 @@ print("webhoomstart2")
 _G.wall_transparency = .5
 _G.optimize_mobs = true
 _G.destroy_map = true
-_G.del_armor= true
-_G.del_weapon = true
+_G.del_armor= false
+_G.del_weapon = false
 _G.hide_projectiles = true
 _G.loadSlow = false
 _G.fpsBoost = true
