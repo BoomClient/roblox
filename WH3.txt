@@ -1444,30 +1444,10 @@ local me = plrs.LocalPlayer;
 
     updateProjsList()
 
-    local function createBall(vector) -- balls that pathfinding places
-      local part = Instance.new("Part")
-      cs:AddTag(part, "RayIgnore")
-      part.Shape = "Ball"
-      part.Material = "Neon"
-      part.Size = Vector3.new(0.6, 0.6, 0.6)
-      part.Position = vector
-      part.Anchored = true
-      part.CanCollide = false
-      part.Name = regionPartName
-      part.Parent = game.Workspace
-      ballArray[#ballArray+1] = part
-    end
 
     local thePart = createPart(CFrame.new(0,0,0), Vector3.new(3,3,3), regionPartName, "Ball")
     local selectionBox = Instance.new("SelectionBox")
 
-    local function getMag(vector1, vector2)
-      -- removes sqrt because time, reduces function complexity
-      local newV2 = Vector3.new(vector2.X, vector1.Y, vector2.Z)
-      --return (vector1 - newV2).magnitude
-      return (vector1 - vector2).magnitude
-      --return ((vector1.X - vector2.X)^2)+((vector1.Y - vector2.Y)^2)+((vector1.Z - vector2.Z)^2) 
-    end
 
     local function getPlayer()
       local play, chara, hum, root = nil, nil, nil, nil
@@ -2093,10 +2073,6 @@ local me = plrs.LocalPlayer;
       return true
     end
 
-    local function checkCenter(regionTable, s)
-      s = (s/2) + .5 --get center cords
-      return regionTable[s][s]['safe']
-    end
 
     local function decide()
       enemy = findCloseEnemy()
@@ -2166,191 +2142,7 @@ local me = plrs.LocalPlayer;
     end
     local _, p, height
     local smalltpdebuff = true
-    local function mainLoop()
-      spawn(function()
-          local _,_,hum,root = getPlayer()
-          while not gameOver do
-            _,_,hum,root = getPlayer()
-            if root ~= nil and hum ~= nil and hum.Health > 0 then
-              spawn(function()
-                  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = walkspeed
-                end)
-              local thought, data = decide()
-              ScriptDebug("Thought: ".. thought .. ", Enemy: " .. enemy.Name)
-              if thought == "chase" then
-                _, p = rayCast(root.CFrame, enemy.PrimaryPart.CFrame, "RayWhitelist", true) 
-                if p == nil then -- if no walls between player and enemy then use moveto instead of pathfinding it
-                  makePath(enemy, true)
-                else
-                  makePath(enemy)
-                end
-              elseif thought == "chase_objective" then
-                if objectiveObject ~= nil and objectiveObject.ClassName == "Model" then
-                  _, p = rayCast(root.CFrame * CFrame.new(0,0,0), objectiveObject.PrimaryPart.CFrame * CFrame.new(0,4,0), "RayWhitelist", true)
-                elseif objectiveObject ~= nil then
-                  _, p = rayCast(root.CFrame * CFrame.new(0,0,0), objectiveObject.CFrame * CFrame.new(0,4,0), "RayWhitelist", true)
-                end
-                if p == nil then -- if no walls between player and objective then use moveto instead of pathfinding it
-                  makePath(objectiveObject, true)
-                else
-                  makePath(objectiveObject)
-                end
-              elseif thought == "chase_fobjective" then
-                _, p = rayCast(root.CFrame, thePart.CFrame, "RayWhitelist", true)
-                if p == nil then -- if no walls between player and objective then use moveto instead of pathfinding it
-                  makePath(thePart, true)
-                else
-                  makePath(thePart)
-                end
-              elseif thought == "strafe" then
-                local left, p = rayCast(root.CFrame, root.CFrame * CFrame.new(1000,0,0), "RayWhitelist",  true) -- left
-                local right = rayCast(root.CFrame, root.CFrame * CFrame.new(-1000,0,0), "RayWhitelist", true)-- right
-                local leftDist = getMag(root.Position, left)
-                local rightDist = getMag(root.Position, right)
-                if math.abs(leftDist - rightDist) < 5 then 
-                  thePart.CFrame = root.CFrame
-                else
-                  if rightDist < leftDist then
-                    thePart.CFrame = root.CFrame * CFrame.new(5,0,0)
-                  else
-                    thePart.CFrame = root.CFrame * CFrame.new(-5,0,0)
-                  end                  
-                end
-                makePath(thePart, true) 		
-              elseif thought == "run" then
-                _, p = rayCast(root.CFrame * CFrame.new(0,0,0), root.CFrame * CFrame.new(0,0,25), "RayWhitelist", true) 
-                if p == nil then -- if nothing is behind me, then run backwards
-                  thePart.CFrame = root.CFrame * CFrame.new(0,0,25)
-                  makePath(thePart, true)
-                else -- keep looking to the left and right till we find a point with no part
-                  local found = false
-                  for i = 1, 20 do
-                    if found then
-                      break
-                    end
-                    for j = 1, 2 do
-                      local studVal = i * 9
-                      if j == 1 then
-                        studVal = studVal * -1
-                      end
-                      _, p = rayCast(root.CFrame, root.CFrame * CFrame.new(studVal,-2,25 - i), "RayWhitelist", true) 
-                      if p == nil then -- location found!
-                        found = true
-                        thePart.CFrame = root.CFrame * CFrame.new(studVal,-2,25 - i)
-                        break
-                      end
-                    end
-                  end
-                  makePath(thePart, true)
-                end
-              elseif thought == "dodge" then
-                local cSafe = nil -- gets the nearest safe spot
-                local cSafeVal = math.huge
-                local temp, temp1
-                local inCenter = false
-                local s = (#regionTable/2) + .5 --get center cords
-                while cSafe == nil and root ~= nil and hum ~= nil and hum.Health > 0 do
-                  if regionTable[s][s]['safe'] then inCenter = true cSafe = regionTable[s][s]['obj'] break end -- if its 1, break cause it has to be best
-                  for x,rowObj in pairs(regionTable) do
-                    for y, colObj in pairs(rowObj) do
-                      temp = regionTable[x][y]
-                      temp1 = math.floor(getMag(root.Position, temp['obj'].Position) + .5)
-                      if temp['safe'] and temp1 < cSafeVal then
-                        --print("Cur Val: ".. temp1 .. " Best Val: " .. cSafeVal)
-                        _, p = rayCast(root.CFrame * CFrame.new(0,0,0), CFrame.new(temp['obj'].Position, root.Position) * CFrame.new(0,0,regionPartSize/2), "RayWhitelist", true) 
-                        if p == nil then
-                          cSafe = temp['obj']
-                          cSafeVal = temp1
-                        else
-                          temp['obj'].BrickColor = BrickColor.new("Bright yellow")
-                        end
-                      end          
-                    end
-                  end
-                  if cSafe ~= nil then -- if safe found break loop,
-                    break
-                  else -- if no safe found, increase scope and loop over everything again
-                    increaseRegionTable()
-                    updateRegionTable()
-                    if extremelyFast then
-                      game:GetService("RunService").RenderStepped:wait()
-                    else
-                      wait()
-                    end
-                  end
-                end -- while loop done here, searching done
-                _,_,hum,root = getPlayer()
-                if cSafe ~= nil and root ~= nil and hum ~= nil then
-                  if inCenter then
-                    if objectiveExists then
-                      if objectiveObject ~= nil and objectiveObject.ClassName == "Model" then
-                        height = Vector3.new(objectiveObject.PrimaryPart.Position.X, root.Position.Y, objectiveObject.PrimaryPart.Position.Z)
-                      elseif objectiveObject ~= nil then
-                        height = Vector3.new(objectiveObject.Position.X, root.Position.Y, objectiveObject.Position.Z)
-                      end
-                    else
-                      height = Vector3.new(enemy.PrimaryPart.Position.X, root.Position.Y, enemy.PrimaryPart.Position.Z)
-                    end
-                    _, p = rayCast(root.CFrame * CFrame.new(0,0,0), CFrame.new(height), "directionWL", true)
-                    if p ~= nil and p.BrickColor == BrickColor.new("Black") then
-                      if objectiveExists then
-                        thePart.CFrame = p.CFrame -- move thepart to the thing safe thats towards objective
-                      elseif getMag(enemy.PrimaryPart.Position, root.Position) > bossRange then -- if the enemy isnt within ability range then set thepart to the closet safe spot
-                        --print('move closer')
-                        thePart.CFrame = p.CFrame
-                      else -- if everything is wrong then go to safe spot
-                        --print('stay')
-                        thePart.CFrame = root.CFrame
-                      end
-                    else -- safe spot towards objectives/enemy is not safe/ dont do shit
-                      --print('dont move')
-                      thePart.CFrame = cSafe.CFrame
-                    end
-                  else
-                    thePart.CFrame = cSafe.CFrame
-                  end
-                  cSafe.BrickColor = BrickColor.new("Lime green")
-                  if inCenter then -- if incenter then just path to the part (since it might be towards an enemy or objective
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cSafe.CFrame
-                    makePath(thePart, true)
-                  else
-                    if (cSafeVal < _G.smallTeleportVal) and _G.smallTeleports and smalltpdebuff then -- if not incenter and the dodge is close, just TP to it -- > 9
-                      if not _G.teleportDuringBossOnly or bossPresent then
-                        smalltpdebuff = false
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = thePart.CFrame
-                        makePath(thePart, true)
-                        spawn(function()
-                            wait(.1)
-                            smalltpdebuff = true
-                          end)
-                      else -- if neither just play normal
-                        makePath(thePart, true)
-                      end
-                    else -- if neither just play normal
-                      makePath(thePart, true)
-                    end
-                  end
-                end
-                while #regionTable > regionStartSize do
-                  decreaseRegionTable()
-                  if extremelyFast then
-                    game:GetService("RunService").RenderStepped:wait()
-                  else
-                    wait()
-                  end
-                end
-              end
-            end
-            if extremelyFast then
-              game:GetService("RunService").RenderStepped:wait()
-            else
-              wait()
-            end
-          end
-        end)  
-    end
-    --PSU_FAST_EXECUTION(function() mainLoop() end)
-    mainLoop()
+
 
     local function useabilities()
       while not game.Players.LocalPlayer:FindFirstChild("Backpack") do
