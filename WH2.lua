@@ -1728,7 +1728,7 @@ local me = plrs.LocalPlayer;
     end
 
 
-    local function lookAt(target, eye)
+    local function  (target, eye)
       local forwardVector = (target - eye).Unit
       local upVector = Vector3.new(0, 1, 0)
       -- Remember the right-hand rule
@@ -1761,7 +1761,7 @@ local me = plrs.LocalPlayer;
         destination = targetPos
         if value then
           if enemy ~= nil then
-            charLookAt(chara, enemy.PrimaryPart)
+            char (chara, enemy.PrimaryPart)
           end
           spawn(clearBalls)
           hum:MoveTo(targetPos)
@@ -1801,7 +1801,7 @@ local me = plrs.LocalPlayer;
         local p = visualRay(.005)
         local distance = (start - hitPosition).Magnitude
         p.Size = Vector3.new(0.3, 0.3, distance)
-        p.CFrame = lookAt(start, hitPosition)*CFrame.new(0, 0, -distance/2)
+        p.CFrame =  (start, hitPosition)*CFrame.new(0, 0, -distance/2)
       end]]
 
       return hitPosition, part
@@ -2655,7 +2655,7 @@ local me = plrs.LocalPlayer;
               partHitBox.Anchored = true
               partHitBox.CanCollide = false
               partHitBox.Transparency = 1
-              partHitBox.CFrame = CFrame.lookAt(Origin, instance.Position)
+              partHitBox.CFrame = CFrame. (Origin, instance.Position)
               partHitBox.Size = Vector3.new(instance.Size.X + 5, 5, 800)
               partHitBox.Name = "enemyRadius"
               partHitBox.Parent = workspace
