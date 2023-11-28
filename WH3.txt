@@ -858,7 +858,7 @@ local me = plrs.LocalPlayer;
     end
   end
     warn('place id check')
-    if game.PlaceId == 14363264964 or game.PlaceId == 3220968688 then	
+    if game.PlaceId == 2414851778 or game.PlaceId == 14363264964 then	
       warn('place id check done')
       while not workspace:FindFirstChild(game.Players.LocalPlayer.Name) do
         wait(.1)
@@ -1185,6 +1185,132 @@ local me = plrs.LocalPlayer;
       return part
     end
 
+    local function createHitBoxPart(size, cframe, obj)
+      local part = Instance.new("Part")
+      cs:AddTag(part, "RayIgnore")
+      part.Size = size
+      part.CFrame = cframe
+      part.Parent = obj
+      part.Name = "enemyRadius"
+      part.Anchored = false
+      part.CanCollide = false
+      part.Material = "SmoothPlastic"
+      part.Transparency = stuffTransparency
+      part:GetPropertyChangedSignal("Transparency"):Connect(antiTransChange)
+      part.ChildAdded:Connect(antiChildChange)
+      part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+      local weld = Instance.new("WeldConstraint")
+      if obj.ClassName == "Model" then
+        weld.Part1 = obj.PrimaryPart
+      else
+        weld.Part1 = obj  
+      end
+      weld.Part0 = part
+      weld.Parent = obj
+      return part
+    end
+
+    local function addHitBox(obj, size, shape)
+      local psize, cframe
+      if shape == nil then
+        local t = {
+          {size, size}, {0, size}, {-size, size},
+          {size, 0}, {-size, 0},
+          {size, -size}, {0, -size}, {-size, -size},
+        }
+        for i,v in pairs(t) do
+          psize = Vector3.new(1, 1, (size))
+          local pos1 = (obj.PrimaryPart.CFrame * CFrame.new(v[1],0,v[2])).Position
+          cframe =  CFrame.new(pos1, obj.PrimaryPart.Position)
+          cframe = cframe * CFrame.new(0,0,(-size/2) + 2)
+          createHitBoxPart(psize, cframe, obj)
+        end
+      elseif shape =="square" then -- this is for when things shoot ball projectiles
+        psize = Vector3.new(size, size, size)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = obj.PrimaryPart.CFrame
+        else
+          cframe = obj.CFrame
+        end
+        createHitBoxPart(psize, cframe, obj)
+      elseif shape == "rectangle" then
+        psize = Vector3.new(size, size, size) -- create square around projectile
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = obj.PrimaryPart.CFrame
+        else
+          cframe = obj.CFrame
+        end
+        createHitBoxPart(psize, cframe, obj)
+
+        psize = Vector3.new(1, size, size*2)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then -- add the pointy thing
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = obj.PrimaryPart.CFrame * CFrame.new(0, 0, (size - 5) * -1)
+        else
+          cframe = obj.CFrame * CFrame.new(0, 0, (size - 5) * -1)
+        end
+        createHitBoxPart(psize, cframe, obj)
+
+      elseif shape == "rectanglev2" then
+        psize = Vector3.new(size, size, size)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = obj.PrimaryPart.CFrame
+        else
+          cframe = obj.CFrame
+        end
+        createHitBoxPart(psize, cframe, obj)
+
+        psize = Vector3.new(size, size, size)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = (obj.PrimaryPart.CFrame * CFrame.new(0, 0, (size - 10) * -1)) * CFrame.Angles(math.rad(45), 0,math.rad(90))
+        else
+          cframe = (obj.CFrame * CFrame.new(0, 0, (size - 10) * -1))* CFrame.Angles(math.rad(45), 0,math.rad(90))
+        end
+        createHitBoxPart(psize, cframe, obj)
+      elseif shape == "rectanglev3" then
+        psize = Vector3.new(size, size, size)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = obj.PrimaryPart.CFrame
+        else
+          cframe = obj.CFrame
+        end
+        createHitBoxPart(psize, cframe, obj)
+
+        psize = Vector3.new(size -5 , size - 5, size - 5)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = (obj.PrimaryPart.CFrame * CFrame.new(0, 0, (size - 5) * -1)) * CFrame.Angles(0, math.rad(45),0)
+        else
+          cframe = (obj.CFrame * CFrame.new(0, 0, (size - 5) * -1))* CFrame.Angles(0, math.rad(45),0)
+        end
+        createHitBoxPart(psize, cframe, obj)
+
+      elseif shape == "rectangle-2" then -- rectnagle with no offset
+        psize = Vector3.new(size, size, size)
+        cframe = CFrame.new(0,0,0)
+        if obj.ClassName == "Model" then
+          obj:WaitForChild("PrimaryPart", .5)
+          cframe = obj.PrimaryPart.CFrame
+          cframe = cframe * CFrame.Angles(0, math.rad(45), 0)
+        else
+          cframe = obj.CFrame
+          cframe = cframe * CFrame.Angles(0, math.rad(45), 0)
+        end
+        createHitBoxPart(psize, cframe, obj)
+      end
+    end
 
     local function cleanMobUp(t)
       if _G.optimize_mobs then
@@ -1202,6 +1328,102 @@ local me = plrs.LocalPlayer;
       end
     end
 
+    local function _initHitBox(instance)
+      if instance.ClassName == "Model" then
+        while instance.PrimaryPart == nil do wait() end
+        while not instance:FindFirstChild(instance.PrimaryPart.Name) do wait() end
+        instance:WaitForChild("HumanoidRootPart")
+        instance:WaitForChild("enemyStyle", 1.5)
+        if not instance:FindFirstChild("enemyStyle") then print('no enemy style') return end
+        local mobType = instance.enemyStyle.Value
+        if mobType == "mob" or mobType == "ranged" or mobType == "melee" or mobType == "burly" then --f if mob
+          if eggEvent then -- egg event only has one tag on each mob
+            while (#cs:GetTags(instance) == 0) do
+              wait(.1)
+            end
+          else
+            while (#cs:GetTags(instance) < 2) do -- normally each mob has two
+              table.foreach(cs:GetTags(instance), print)
+              ScriptDebug("waiting for mob to add tag" )
+              wait(.1)
+            end
+          end
+          cs:AddTag(instance, "Enemy")
+          if _G.doInstakill then
+            if instance:FindFirstChild("Humanoid") and instakillTable[instance.Name] then
+              instance.Humanoid.Health = 0
+            end
+          end
+          if mobType ~= "ranged" then
+            if game.PlaceId == 5281215714 then -- if volcanic mob
+              if instance.Name == "Explosive Lava Walker" or instance.Name == "Aggressive Lava Walker" then
+                addHitBox(instance, 8.5)
+              end
+            elseif game.PlaceId == 6216785535 then
+              if instance.Name == "Temple Guard" then
+                addHitBox(instance, 3)
+              end                
+            else
+              addHitBox(instance, 7)
+            end
+          end
+        else -- if not mob then
+          if eggEvent then -- egg event has 0 tagso n boss
+            while #cs:GetTags(instance) ~= 0 do
+              wait()
+            end
+          else
+            while #cs:GetTags(instance) < 1 do
+              wait()
+            end          
+          end
+          if _G.doInstakill then
+            if instance:FindFirstChild("Humanoid") and instakillTable[instance.Name] then
+              instance.Humanoid.Health = 0
+            end
+          end
+          cs:AddTag(instance, "Enemy")             
+        end
+      end  
+    end
+
+    local function initHitBox()
+      if workspace:FindFirstChild("tier") or workspace:FindFirstChild("currentWave") then -- boss raid or wave defense ( they work the same )
+        workspace.enemies.ChildAdded:Connect(function(instance)
+            if instance.Name == "Stone Warrior" then -- instakill in mob folder
+              instance:WaitForChild("Humanoid")
+              addHitBox(instance, 5)
+              wait(1)
+              instance.Humanoid.Health = 0
+            else
+              _initHitBox(instance)
+              cleanMobUp(instance)
+            end
+          end)
+      else
+        for i,room in pairs(workspace.dungeon:GetChildren()) do -- normal dungeon handler
+          if room:FindFirstChild("enemyFolder") then
+            local efold = room:FindFirstChild("enemyFolder")
+            if efold then
+              local e = efold:FindFirstChildOfClass("Model")
+              if e then
+                if e:FindFirstChild("Humanoid") then -- if folder already has mobs then add hit box
+                  wait(.5)
+                  for i,instance in pairs(efold:GetChildren()) do
+                    _initHitBox(instance)
+                    cleanMobUp(instance)
+                  end
+                end
+              end
+              efold.ChildAdded:Connect(function(instance) -- all future folders, if mob spawned, give hitbox
+                  _initHitBox(instance)
+                  cleanMobUp(instance)
+                end)
+            end
+          end
+        end
+      end
+    end
 
     local projNameList = {} -- important
     local enemyProjNameList = {}
@@ -1222,10 +1444,30 @@ local me = plrs.LocalPlayer;
 
     updateProjsList()
 
+    local function createBall(vector) -- balls that pathfinding places
+      local part = Instance.new("Part")
+      cs:AddTag(part, "RayIgnore")
+      part.Shape = "Ball"
+      part.Material = "Neon"
+      part.Size = Vector3.new(0.6, 0.6, 0.6)
+      part.Position = vector
+      part.Anchored = true
+      part.CanCollide = false
+      part.Name = regionPartName
+      part.Parent = game.Workspace
+      ballArray[#ballArray+1] = part
+    end
 
     local thePart = createPart(CFrame.new(0,0,0), Vector3.new(3,3,3), regionPartName, "Ball")
     local selectionBox = Instance.new("SelectionBox")
 
+    local function getMag(vector1, vector2)
+      -- removes sqrt because time, reduces function complexity
+      local newV2 = Vector3.new(vector2.X, vector1.Y, vector2.Z)
+      --return (vector1 - newV2).magnitude
+      return (vector1 - vector2).magnitude
+      --return ((vector1.X - vector2.X)^2)+((vector1.Y - vector2.Y)^2)+((vector1.Z - vector2.Z)^2) 
+    end
 
     local function getPlayer()
       local play, chara, hum, root = nil, nil, nil, nil
@@ -1316,22 +1558,26 @@ local me = plrs.LocalPlayer;
 
     local function webHookOnEnd()
       if _G.webhookEnabled then
-        webhookLocals.timeLeft = game.Players.LocalPlayer.Character.Name
+        webhookLocals.timeLeft = convertToHMS(workspace.timeLeft.Value)
         webhookLocals.itemsEarned = {
           {
             color = '0';
             author = {
-              name = '';
+              name = 'Genius Notification';
             };
             fields = {
               {
-                name = "",
+                name = "Dungeon: ",
+                value = tostring(webhookLocals.dungeonName)
+              },
+              {
+                name = "Clear Time: ",
                 value = webhookLocals.timeLeft
               },
             };
           },
         };
-        wait(5)
+        wait(2)
         print('doing webhook')
         webhookLocals.endingInventory = getPlayerInvy(game.Players.LocalPlayer)
         getNewItems(webhookLocals.startingInventory.weapons, webhookLocals.endingInventory.weapons)
@@ -1399,6 +1645,117 @@ local me = plrs.LocalPlayer;
       selectionBox.Parent = adornee
     end
 
+    local function findCloseEnemy()
+      local bestMob = nil
+      local bestDist = math.huge
+      if #cs:GetTagged("Prio-Enemy") > 0 then
+        return cs:GetTagged("Prio-Enemy")[1]
+      end
+      while #cs:GetTagged("Enemy") < 1 do
+        -- script should enter a dodge mode
+        ScriptDebug("Waiting for enemies...")
+        if extremelyFast then
+          game:GetService("RunService").RenderStepped:wait()
+        else
+          wait()
+        end
+      end
+      while bestMob == nil do
+        local enemies = cs:GetTagged("Enemy")
+        local _, _, _, root = getPlayer()
+        for i, mob in pairs(enemies) do
+          if mob:FindFirstChild("HumanoidRootPart") and root ~= nil then
+            local dst = getMag(root.Position, mob.HumanoidRootPart.Position)
+            if dst < bestDist then
+              bestMob = mob
+              bestDist = dst
+            end
+          end
+        end
+        if bestMob ~= nil then break end
+        if extremelyFast then
+          game:GetService("RunService").RenderStepped:wait()
+        else
+          wait()
+        end
+      end
+      if _G.showTarget then
+        SelectBoxChange(bestMob.HumanoidRootPart)
+      end
+      --targetPart.CFrame = bestMob.HumanoidRootPart.CFrame * CFrame.new(0,5,0)
+      return bestMob
+    end
+
+
+    function charLookAt(chr,target) --assume chr is a character and target is a brick to look towards
+      if chr.PrimaryPart then --just make sure the character's HRP has loaded
+        local chrPos=chr.PrimaryPart.Position --get the position of the HRP
+        local tPos=target.Position --get the position of the target
+        local newCF=CFrame.new(Vector3.new(chrPos.x,chrPos.y,chrPos.z),Vector3.new(tPos.x,chrPos.y,tPos.z)) --create our CFrame
+        chr:SetPrimaryPartCFrame(newCF) --set the HRP's CFrame to our result, thus moving the character!
+      end
+    end
+
+    local function clearBalls()
+      for i, v in pairs(ballArray) do
+        v:Destroy()
+      end
+      ballArray = {}
+    end
+
+
+    local function followPath(position)
+      local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+      local hum = game.Players.LocalPlayer.Character.Humanoid
+      path:ComputeAsync(root.Position, position)
+      waypoints = {}
+      if path.Status == Enum.PathStatus.Success then
+        waypoints = path:GetWaypoints()
+        if sDebug then
+          clearBalls()
+          for i, v in pairs(waypoints) do
+            createBall(v.Position)
+          end
+        end
+        currentWaypointIndex = 2
+        if waypoints[currentWaypointIndex] == Enum.PathWaypointAction.Jump then
+          hum.Jump = true
+        end
+        hum:MoveTo(waypoints[currentWaypointIndex].Position)
+
+      else
+        print('path not success')
+        if enemy then
+          hum:MoveTo(enemy.PrimaryPart.Position)
+        else
+          hum:MoveTo(root.Position)
+        end
+        
+      end
+    end
+
+    local function onWaypointReached(reached)
+      local play, chara, hum, root = getPlayer()
+      if chara ~= nil and hum ~= nil and reached and currentWaypointIndex < #waypoints then
+        currentWaypointIndex = currentWaypointIndex + 1
+        charLookAt(chara, enemy.HumanoidRootPart)
+        hum:MoveTo(waypoints[currentWaypointIndex].Position)
+      elseif chara ~= nil and hum ~= ni then
+        charLookAt(chara, enemy.HumanoidRootPart)
+      end
+    end
+
+    local function onPathBlocked(blockedWaypointIndex)
+      print('path blocked')
+      local play, chara, hum, root = getPlayer()
+      if chara ~= nil and enemy ~= nil then
+        charLookAt(chara, enemy.HumanoidRootPart)
+      end
+      if blockedWaypointIndex > currentWaypointIndex then
+        followPath(destination)
+      end
+    end
+
     local function rayCollectionService()
       local play, chara, hum, root = getPlayer()
       if chara == nil then return end
@@ -1450,7 +1807,15 @@ local me = plrs.LocalPlayer;
     end
 
 
-  
+    local function lookAt(target, eye)
+      local forwardVector = (target - eye).Unit
+      local upVector = Vector3.new(0, 1, 0)
+      -- Remember the right-hand rule
+      local rightVector = forwardVector:Cross(upVector)
+      local upVector2 = rightVector:Cross(forwardVector)
+
+      return CFrame.fromMatrix(eye, rightVector, upVector2)
+    end
 
     function round(num)
       return math.floor(num + 0.5)
@@ -1462,7 +1827,28 @@ local me = plrs.LocalPlayer;
 
     local oldTargetPos = Vector3.new(0,0,0)
     local targetPos = Vector3.new(1,0,0)
-  
+    local function makePath(target, value)
+      if value == nil then value = false end
+      local play, chara, hum, root = getPlayer()
+      if target.ClassName == "Model" then
+        targetPos = roundVector(target.PrimaryPart.Position)
+      else
+        targetPos = roundVector(target.Position)
+      end
+      if hum ~= nil and root ~= nil then
+        oldTargetPos = targetPos
+        destination = targetPos
+        if value then
+          if enemy ~= nil then
+            charLookAt(chara, enemy.PrimaryPart)
+          end
+          spawn(clearBalls)
+          hum:MoveTo(targetPos)
+        else
+          followPath(targetPos)
+        end
+      end
+    end
 
     function visualRay(long)
       local p = Instance.new("Part")
@@ -1494,6 +1880,7 @@ local me = plrs.LocalPlayer;
         local p = visualRay(.005)
         local distance = (start - hitPosition).Magnitude
         p.Size = Vector3.new(0.3, 0.3, distance)
+        p.CFrame = lookAt(start, hitPosition)*CFrame.new(0, 0, -distance/2)
       end]]
 
       return hitPosition, part
@@ -1539,6 +1926,14 @@ local me = plrs.LocalPlayer;
     local projNameTemp = nil
     local projNameParentTemp = nil
 
+    local function checkIfProjectile(obj)
+      projNameTemp = obj.Name
+      if projNameTemp == "enemyRadius" then
+        return true
+      end
+      if obj.Transparency == 1 then
+        return false
+      end
 
       checkProjResult = whiteListBlackList[projNameTemp]
       if checkProjResult ~= nil then
@@ -1843,6 +2238,10 @@ local me = plrs.LocalPlayer;
       return true
     end
 
+    local function checkCenter(regionTable, s)
+      s = (s/2) + .5 --get center cords
+      return regionTable[s][s]['safe']
+    end
 
     local function decide()
       enemy = findCloseEnemy()
@@ -1912,7 +2311,191 @@ local me = plrs.LocalPlayer;
     end
     local _, p, height
     local smalltpdebuff = true
-
+    local function mainLoop()
+      spawn(function()
+          local _,_,hum,root = getPlayer()
+          while not gameOver do
+            _,_,hum,root = getPlayer()
+            if root ~= nil and hum ~= nil and hum.Health > 0 then
+              spawn(function()
+                  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = walkspeed
+                end)
+              local thought, data = decide()
+              ScriptDebug("Thought: ".. thought .. ", Enemy: " .. enemy.Name)
+              if thought == "chase" then
+                _, p = rayCast(root.CFrame, enemy.PrimaryPart.CFrame, "RayWhitelist", true) 
+                if p == nil then -- if no walls between player and enemy then use moveto instead of pathfinding it
+                  makePath(enemy, true)
+                else
+                  makePath(enemy)
+                end
+              elseif thought == "chase_objective" then
+                if objectiveObject ~= nil and objectiveObject.ClassName == "Model" then
+                  _, p = rayCast(root.CFrame * CFrame.new(0,0,0), objectiveObject.PrimaryPart.CFrame * CFrame.new(0,4,0), "RayWhitelist", true)
+                elseif objectiveObject ~= nil then
+                  _, p = rayCast(root.CFrame * CFrame.new(0,0,0), objectiveObject.CFrame * CFrame.new(0,4,0), "RayWhitelist", true)
+                end
+                if p == nil then -- if no walls between player and objective then use moveto instead of pathfinding it
+                  makePath(objectiveObject, true)
+                else
+                  makePath(objectiveObject)
+                end
+              elseif thought == "chase_fobjective" then
+                _, p = rayCast(root.CFrame, thePart.CFrame, "RayWhitelist", true)
+                if p == nil then -- if no walls between player and objective then use moveto instead of pathfinding it
+                  makePath(thePart, true)
+                else
+                  makePath(thePart)
+                end
+              elseif thought == "strafe" then
+                local left, p = rayCast(root.CFrame, root.CFrame * CFrame.new(1000,0,0), "RayWhitelist",  true) -- left
+                local right = rayCast(root.CFrame, root.CFrame * CFrame.new(-1000,0,0), "RayWhitelist", true)-- right
+                local leftDist = getMag(root.Position, left)
+                local rightDist = getMag(root.Position, right)
+                if math.abs(leftDist - rightDist) < 5 then 
+                  thePart.CFrame = root.CFrame
+                else
+                  if rightDist < leftDist then
+                    thePart.CFrame = root.CFrame * CFrame.new(5,0,0)
+                  else
+                    thePart.CFrame = root.CFrame * CFrame.new(-5,0,0)
+                  end                  
+                end
+                makePath(thePart, true) 		
+              elseif thought == "run" then
+                _, p = rayCast(root.CFrame * CFrame.new(0,0,0), root.CFrame * CFrame.new(0,0,25), "RayWhitelist", true) 
+                if p == nil then -- if nothing is behind me, then run backwards
+                  thePart.CFrame = root.CFrame * CFrame.new(0,0,25)
+                  makePath(thePart, true)
+                else -- keep looking to the left and right till we find a point with no part
+                  local found = false
+                  for i = 1, 20 do
+                    if found then
+                      break
+                    end
+                    for j = 1, 2 do
+                      local studVal = i * 9
+                      if j == 1 then
+                        studVal = studVal * -1
+                      end
+                      _, p = rayCast(root.CFrame, root.CFrame * CFrame.new(studVal,-2,25 - i), "RayWhitelist", true) 
+                      if p == nil then -- location found!
+                        found = true
+                        thePart.CFrame = root.CFrame * CFrame.new(studVal,-2,25 - i)
+                        break
+                      end
+                    end
+                  end
+                  makePath(thePart, true)
+                end
+              elseif thought == "dodge" then
+                local cSafe = nil -- gets the nearest safe spot
+                local cSafeVal = math.huge
+                local temp, temp1
+                local inCenter = false
+                local s = (#regionTable/2) + .5 --get center cords
+                while cSafe == nil and root ~= nil and hum ~= nil and hum.Health > 0 do
+                  if regionTable[s][s]['safe'] then inCenter = true cSafe = regionTable[s][s]['obj'] break end -- if its 1, break cause it has to be best
+                  for x,rowObj in pairs(regionTable) do
+                    for y, colObj in pairs(rowObj) do
+                      temp = regionTable[x][y]
+                      temp1 = math.floor(getMag(root.Position, temp['obj'].Position) + .5)
+                      if temp['safe'] and temp1 < cSafeVal then
+                        --print("Cur Val: ".. temp1 .. " Best Val: " .. cSafeVal)
+                        _, p = rayCast(root.CFrame * CFrame.new(0,0,0), CFrame.new(temp['obj'].Position, root.Position) * CFrame.new(0,0,regionPartSize/2), "RayWhitelist", true) 
+                        if p == nil then
+                          cSafe = temp['obj']
+                          cSafeVal = temp1
+                        else
+                          temp['obj'].BrickColor = BrickColor.new("Bright yellow")
+                        end
+                      end          
+                    end
+                  end
+                  if cSafe ~= nil then -- if safe found break loop,
+                    break
+                  else -- if no safe found, increase scope and loop over everything again
+                    increaseRegionTable()
+                    updateRegionTable()
+                    if extremelyFast then
+                      game:GetService("RunService").RenderStepped:wait()
+                    else
+                      wait()
+                    end
+                  end
+                end -- while loop done here, searching done
+                _,_,hum,root = getPlayer()
+                if cSafe ~= nil and root ~= nil and hum ~= nil then
+                  if inCenter then
+                    if objectiveExists then
+                      if objectiveObject ~= nil and objectiveObject.ClassName == "Model" then
+                        height = Vector3.new(objectiveObject.PrimaryPart.Position.X, root.Position.Y, objectiveObject.PrimaryPart.Position.Z)
+                      elseif objectiveObject ~= nil then
+                        height = Vector3.new(objectiveObject.Position.X, root.Position.Y, objectiveObject.Position.Z)
+                      end
+                    else
+                      height = Vector3.new(enemy.PrimaryPart.Position.X, root.Position.Y, enemy.PrimaryPart.Position.Z)
+                    end
+                    _, p = rayCast(root.CFrame * CFrame.new(0,0,0), CFrame.new(height), "directionWL", true)
+                    if p ~= nil and p.BrickColor == BrickColor.new("Black") then
+                      if objectiveExists then
+                        thePart.CFrame = p.CFrame -- move thepart to the thing safe thats towards objective
+                      elseif getMag(enemy.PrimaryPart.Position, root.Position) > bossRange then -- if the enemy isnt within ability range then set thepart to the closet safe spot
+                        --print('move closer')
+                        thePart.CFrame = p.CFrame
+                      else -- if everything is wrong then go to safe spot
+                        --print('stay')
+                        thePart.CFrame = root.CFrame
+                      end
+                    else -- safe spot towards objectives/enemy is not safe/ dont do shit
+                      --print('dont move')
+                      thePart.CFrame = cSafe.CFrame
+                    end
+                  else
+                    thePart.CFrame = cSafe.CFrame
+                  end
+                  cSafe.BrickColor = BrickColor.new("Lime green")
+                  if inCenter then -- if incenter then just path to the part (since it might be towards an enemy or objective
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cSafe.CFrame
+                    makePath(thePart, true)
+                  else
+                    if (cSafeVal < _G.smallTeleportVal) and _G.smallTeleports and smalltpdebuff then -- if not incenter and the dodge is close, just TP to it -- > 9
+                      if not _G.teleportDuringBossOnly or bossPresent then
+                        smalltpdebuff = false
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = thePart.CFrame
+                        makePath(thePart, true)
+                        spawn(function()
+                            wait(.1)
+                            smalltpdebuff = true
+                          end)
+                      else -- if neither just play normal
+                        makePath(thePart, true)
+                      end
+                    else -- if neither just play normal
+                      makePath(thePart, true)
+                    end
+                  end
+                end
+                while #regionTable > regionStartSize do
+                  decreaseRegionTable()
+                  if extremelyFast then
+                    game:GetService("RunService").RenderStepped:wait()
+                  else
+                    wait()
+                  end
+                end
+              end
+            end
+            if extremelyFast then
+              game:GetService("RunService").RenderStepped:wait()
+            else
+              wait()
+            end
+          end
+        end)  
+    end
+    --PSU_FAST_EXECUTION(function() mainLoop() end)
+    mainLoop()
 
     local function useabilities()
       while not game.Players.LocalPlayer:FindFirstChild("Backpack") do
@@ -2001,6 +2584,15 @@ local me = plrs.LocalPlayer;
     end
 
     -- secondBossGeyser
+    local function findClosestRockPile(i)
+      local a = workspace.secondBossRockPile2.Union
+      local b = workspace.secondBossRockPile1.Union
+      if (a.Position - i.PrimaryPart.Position).Magnitude < (b.Position - i.PrimaryPart.Position).Magnitude then
+        return a
+      else
+        return b
+      end
+    end
 
 
 
@@ -2011,6 +2603,21 @@ local me = plrs.LocalPlayer;
       gyzerLoopRunning = false,
     }
 
+    local function createTentacleAttack(tentacle)
+      local r = game.Players.LocalPlayer.Character.HumanoidRootPart
+      local t = tentacle.PrimaryPart
+      local part = Instance.new("Part")
+      part.CFrame = CFrame.new(part.Position, r.Position)
+      part.CFrame = t.CFrame * CFrame.new(0,10,-60)
+      part.Size = Vector3.new(14,5,128)
+      part.Parent = workspace
+      part.CanCollide = false
+      part.Transparency = 1
+      part.Anchored = true
+      part.Name = "enemyRadius"
+      wait(3)
+      part:Destroy()        
+    end
 
 
     workspace.ChildAdded:Connect(function(instance)
@@ -2127,6 +2734,7 @@ local me = plrs.LocalPlayer;
               partHitBox.Anchored = true
               partHitBox.CanCollide = false
               partHitBox.Transparency = 1
+              partHitBox.CFrame = CFrame.lookAt(Origin, instance.Position)
               partHitBox.Size = Vector3.new(instance.Size.X + 5, 5, 800)
               partHitBox.Name = "enemyRadius"
               partHitBox.Parent = workspace
@@ -2475,11 +3083,11 @@ local me = plrs.LocalPlayer;
     Game:GetService("LogService").MessageOut:Connect(function(Message)
         --[[=table.foreach(strings, function(i,v)
           if Message == v then
-              game:GetService('TeleportService'):Teleport(14363264964)
+              game:GetService('TeleportService'):Teleport(2414851778)
           end
       end)]]
         if string.find(Message,"Server Kick Message:") then
-          game:GetService('TeleportService'):Teleport(14363264964)
+          game:GetService('TeleportService'):Teleport(2414851778)
         end
       end)
     spawn(del_armor_ui)
@@ -2488,6 +3096,13 @@ local me = plrs.LocalPlayer;
     local Players = game:GetService("Players")
     game.Players.LocalPlayer.Character.Humanoid.MoveToFinished:Connect(onWaypointReached)
 
+    local function onCharacterAdded(character)
+      local _, vchar, hum, root = getPlayer()
+      hum.MoveToFinished:Connect(onWaypointReached)
+      hum.WalkSpeed = walkspeed
+      hum.AutoRotate = true
+      spawn(del_armor_ui) 
+    end
 
     game.Players.LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
 
@@ -4235,8 +4850,8 @@ local me = plrs.LocalPlayer;
         [4865331948] = { ['version'] = 473,  ['name'] = "Easter Event"      },
         [3220974599] = { ['version'] = 89,   ['name'] = "Wave Defense"      },
         [4286254333] = { ['version'] = 74,   ['name'] = "Boss Raid"         },
-        [14363264964] = { ['version'] = 4360, ['name'] = "Lobby"             },
-        [3220968688] = { ['version'] = 152, ['name'] = "Lobby2"             },
+        [2414851778] = { ['version'] = 4360, ['name'] = "Lobby"             },
+        [14363264964] = { ['version'] = 152, ['name'] = "Lobby2"             },
       }
       if places[game.PlaceId] ~= nil and places[game.PlaceId]['version'] ~= game.PlaceVersion then
         --failReport("Ban Prevention, DM MRob on discord", "PlaceId: "..tostring(game.PlaceId).." CurrentPlaceVersion: ".. tostring(places[game.PlaceId]['version']).." NewPlaceVersion: "..tostring(game.PlaceVersion) )
@@ -4246,7 +4861,7 @@ local me = plrs.LocalPlayer;
     if game.PlaceId == 6216785535 then
       webhookLocals.dungeonName = "Oceanic"
       spawn(oceanFix)
-    elseif game.PlaceId == 14363263080 then -- volcanic
+    elseif game.PlaceId == 5281215714 then -- volcanic
       webhookLocals.dungeonName = "Volcanic Chambers"
       spawn(volcanicFix)
     elseif game.PlaceId == 4628698373 then -- orbital
@@ -4312,7 +4927,7 @@ local me = plrs.LocalPlayer;
       end
     end
 
-    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true
 
     if _G.hide_projectiles then
       spawn(function()
