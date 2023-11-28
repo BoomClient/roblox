@@ -1,6 +1,80 @@
 
 _G.destroy_map = true
 
+      local places = {
+        [14363263080] = { ['version'] = 46,   ['name'] = "Volcanic Chambers" },
+        [4628698373] = { ['version'] = 39,   ['name'] = "Orbital Outpost"   },
+        [4113459044] = { ['version'] = 68,   ['name'] = "Steampunk Sewers"  },
+        [3737465474] = { ['version'] = 80,   ['name'] = "Ghastly Harbor"    },
+        [3488584454] = { ['version'] = 93,   ['name'] = "The Canals"        },
+        [3277965370] = { ['version'] = 110,  ['name'] = "Samurai Palace"    },
+        [3119903031] = { ['version'] = 117,  ['name'] = "The Underworld"    },
+        [3041739550] = { ['version'] = 134,  ['name'] = "King's Palace"     },
+        [2988891534] = { ['version'] = 424,  ['name'] = "Pirate Island"     },
+        [2743806150] = { ['version'] = 352,  ['name'] = "Winter Outpost"    },
+        [2606294912] = { ['version'] = 473,  ['name'] = "Desert Temple"     },
+        [4865331948] = { ['version'] = 473,  ['name'] = "Easter Event"      },
+        [3220974599] = { ['version'] = 89,   ['name'] = "Wave Defense"      },
+        [4286254333] = { ['version'] = 74,   ['name'] = "Boss Raid"         },
+        [14363264964] = { ['version'] = 4360, ['name'] = "Lobby"             },
+        [3220968688] = { ['version'] = 152, ['name'] = "Lobby2"             },
+      }
+      if places[game.PlaceId] ~= nil and places[game.PlaceId]['version'] ~= game.PlaceVersion then
+        --failReport("Ban Prevention, DM MRob on discord", "PlaceId: "..tostring(game.PlaceId).." CurrentPlaceVersion: ".. tostring(places[game.PlaceId]['version']).." NewPlaceVersion: "..tostring(game.PlaceVersion) )
+      end
+    end
+    spawn(updatecheck)
+    if game.PlaceId == 6216785535 then
+      webhookLocals.dungeonName = "Oceanic"
+      spawn(oceanFix)
+    elseif game.PlaceId == 14363263080 then -- volcanic
+      webhookLocals.dungeonName = "Volcanic Chambers"
+      spawn(volcanicFix)
+    elseif game.PlaceId == 4628698373 then -- orbital
+      webhookLocals.dungeonName = "Orbital Outpost"
+      spawn(fixOrbital)
+    elseif game.PlaceId == 4113459044 then -- steam
+      webhookLocals.dungeonName = "Steampunk Sewers"
+      spawn(steamFix)
+    elseif game.PlaceId == 3737465474 then -- ghastly
+      webhookLocals.dungeonName = "Ghastly Harbor"
+      spawn(ghastlyFix)
+    elseif game.PlaceId == 3488584454 then -- canals
+      webhookLocals.dungeonName = "The Canals"
+      spawn(canalsFix)
+    elseif game.PlaceId == 3277965370 then -- samurai
+      webhookLocals.dungeonName = "Samurai Palace"
+      spawn(samuraiFix)
+    elseif game.PlaceId == 3119903031 then -- underworld
+      webhookLocals.dungeonName = "The Underworld"
+      spawn(underworldFix)
+    elseif game.PlaceId == 3041739550 then -- king
+      webhookLocals.dungeonName = "Kings Palace"
+      spawn(kingFix)
+    elseif game.PlaceId == 2988891534 then -- pirate
+      webhookLocals.dungeonName = "Pirate Island"
+      spawn(pirateFix)
+    elseif game.PlaceId == 2743806150 then -- winter
+      webhookLocals.dungeonName = "Winter Outpost"
+      spawn(winterFix)
+    elseif game.PlaceId == 2606294912 then -- desert
+      webhookLocals.dungeonName = "Desert Temple"
+      spawn(desertFix)
+    elseif game.PlaceId == 4286254333 then -- boss raid
+      webhookLocals.dungeonName = "Boss Raid"
+      normalDungeon = false
+      bossRaid = true
+    elseif workspace:FindFirstChild("currentWave") then -- wave defense
+      webhookLocals.dungeonName = "Wave Defense"
+      waveDefense = true
+      normalDungeon = false
+    elseif game.PlaceId == 4865331948 then -- easter egg event
+      waveDefense = false
+      normalDungeon = false  
+      eggEvent = true
+      spawn(eggFix)
+    end
+
     function oceanFix()
       createWall(CFrame.new(-2530.18213, 217.300583, 2292.73022, 0.978144467, 0, 0.207926437, 0, 1, 0, -0.207926437, 0, 0.978144467), Vector3.new(19.569891, 131.600006, 27.9050236))
       createWall(CFrame.new(-783.23999, 69.9086685, 2350.23462, -1, 0, 0, 0, 1, 0, 0, 0, -1), Vector3.new(372.139984, 128.209991, 15.29)) 
