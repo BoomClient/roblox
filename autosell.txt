@@ -1,0 +1,96 @@
+_G.autosell = true
+_G.PrintSell = true
+_G.keep_items_level_requirement = 175 -- keep items level requirements are above this number
+_G.keep2spells = true
+_G.keep_items_from_class = {
+  ["physical"] = false, 
+  ["mage"] = false,
+}
+
+_G.keeprarities = {
+  ['ultimate'] = true,
+  ['legendary'] = true,
+  ['epic'] = true,
+  ['rare'] = false,
+  ['uncommon'] = false,
+  ['common'] = false,
+}
+
+_G.itemlist ={ 
+
+  ["Lava King's Warrior Helmet"] = {"rare","epic"},
+  ["Enhanced Inner Rage"] = {"legendary"},
+  ["Enhanced Inner Focus"] = {"legendary"},
+
+}
+
+    function checkSell(rare, name) -- vital function
+      for itemName,rareTable in pairs(_G.itemlist) do
+        if lobbyStrCheck(itemName, name) then
+          for _, j in pairs(rareTable) do
+            if rare == j then
+              return false
+            end
+          end
+        end
+      end
+      return not _G.keeprarities[rare]
+    end
+
+    local function sell()
+      if _G.autosell then
+        local tallyList = {}
+        local itemType, gitems
+        gitems = getPlayerInvy(game.Players.LocalPlayer)
+        for itemFolderName,itemFolder in pairs(gitems) do
+          gitems = getPlayerInvy(game.Players.LocalPlayer)
+          if itemFolderName == "weapons" or itemFolderName == "chests" or itemFolderName == "helmets" then
+            for i, item in pairs(itemFolder) do
+              itemType = getItemType(item, false)
+              local itemTypeCheck = not _G.keep_items_from_class[itemType]
+              if not item.equipped and (checkSell(item.rarity, item.name) and item.levelReq < _G.keep_items_level_requirement and itemTypeCheck) then
+                if itemFolderName == "weapons" then
+                  if _G.PrintSell then
+                    print('OhGenius Selling:: ', item.name)
+                  else
+                    game:GetService("ReplicatedStorage").remotes.sellItemEvent:FireServer({ ["ability"]= { }, ["helmet"]= { }, ["chest"]= { }, ["weapon"]= { (tonumber(string.sub(i, 8))) } })
+                  end
+                elseif itemFolderName == "chests" then
+                  if _G.PrintSell then
+                    print('OhGenius Selling:: ', item.name)
+                  else
+                    game:GetService("ReplicatedStorage").remotes.sellItemEvent:FireServer({ ["ability"]= { }, ["helmet"]= { }, ["chest"]= { (tonumber(string.sub(i, 7))) }, ["weapon"]= { } })
+                  end
+                elseif itemFolderName == "helmets" then
+                  if _G.PrintSell then
+                    print('OhGenius Selling:: ', item.name)
+                  else
+                    game:GetService("ReplicatedStorage").remotes.sellItemEvent:FireServer({ ["ability"]= { }, ["helmet"]= { (tonumber(string.sub(i, 8))) }, ["chest"]= { }, ["weapon"]= { } })
+                  end
+                end
+              end
+            end
+          end
+          if itemFolderName == "abilities" then
+            for i, item in pairs(gitems.abilities) do
+              if tallyList[item.name] then
+                tallyList[item.name] = tallyList[item.name] +1
+              else
+                tallyList[item.name] = 1
+              end
+              if not item.equipped.q and not item.equipped.e then
+                if (checkSell(item.rarity, item.name) and item.levelReq < _G.keep_items_level_requirement) or (((tallyList[item.name] > 2) and _G.keep2spells))  then
+                  if _G.PrintSell then
+                    print('OhGenius Selling:: ', item.name)
+                  else
+                    game:GetService("ReplicatedStorage").remotes.sellItemEvent:FireServer({ ["ability"]= {(tonumber(string.sub(i, 9))) }, ["helmet"]= { }, ["chest"]= { }, ["weapon"]= { } })
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+sell()
