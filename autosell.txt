@@ -1,6 +1,7 @@
+print("--autoselling script--")
 _G.autosell = true
 _G.PrintSell = true
-_G.keep_items_level_requirement = 175 -- keep items level requirements are above this number
+_G.keep_items_level_requirement = 200 -- keep items level requirements are above this number
 _G.keep2spells = true
 _G.keep_items_from_class = {
   ["physical"] = false, 
