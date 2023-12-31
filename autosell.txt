@@ -19,6 +19,7 @@ _G.keeprarities = {
 _G.itemlist ={ 
 
   ["Lava King's Warrior Helmet"] = {"rare","epic"},
+  ["Daybreak And Gildensong"] = {"legendary"},
   ["Enhanced Inner Rage"] = {"legendary"},
   ["Enhanced Inner Focus"] = {"legendary"},
 
