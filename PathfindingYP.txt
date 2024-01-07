@@ -109,7 +109,14 @@ game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false,
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
 task.wait(3)
 moveAndWait(Vector3.new(2518, 38, -2735))
-
+game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(Vector3.new(2408, 74, -2763)))
+game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, workspace.dungeon.room4.enemyFolder["Shadow Stalker"].Head.Position))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
 else
 print('no')
 end
