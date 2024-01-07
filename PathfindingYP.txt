@@ -1,0 +1,59 @@
+repeat wait() until game:IsLoaded()
+wait()
+local player = game:GetService("Players").LocalPlayer
+local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+local desiredPlaceID = 14363263080
+local currentPlaceID = game.PlaceId
+
+
+local function moveAndWait(position)
+    if humanoid then
+        humanoid:MoveTo(position)
+        humanoid.MoveToFinished:Wait()
+    end
+end
+
+if currentPlaceID == desiredPlaceID then
+moveAndWait(Vector3.new(2825, 31, -2071))
+moveAndWait(Vector3.new(2804, 31, -2084))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7)
+moveAndWait(Vector3.new(2825, 31, -2071))
+moveAndWait(Vector3.new(2807, 31, -2091))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(4)
+moveAndWait(Vector3.new(2721, 25, -2159))
+moveAndWait(Vector3.new(2673, 25, -2187))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(4)
+moveAndWait(Vector3.new(2721, 25, -2159))
+moveAndWait(Vector3.new(2670, 25, -2212))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(6)
+moveAndWait(Vector3.new(2673, 25, -2146))
+moveAndWait(Vector3.new(2648, 25, -2201))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(7.5)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(6)
+else
+print('no')
+end
