@@ -56,7 +56,7 @@ game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false,
 task.wait(6)
 moveAndWait(Vector3.new(2586, 8, -2237))
 moveAndWait(Vector3.new(2590, 8, -2292))
-moveAndWait(Vector3.new(2572, 8, -2346))
+moveAndWait(Vector3.new(2577, 8, -2346))
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
 task.wait(7.5)
