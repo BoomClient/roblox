@@ -72,7 +72,7 @@ game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false,
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
 task.wait(6)
 moveAndWait(Vector3.new(2607, 9, -2338))
-moveAndWait(Vector3.new(2596, 9, -2360))  -- move x leftright
+moveAndWait(Vector3.new(2596, 9, -2360))  -- this guy annoying
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
 task.wait(7.5)
@@ -83,7 +83,7 @@ moveAndWait(Vector3.new(2552, 8, -2560))
 moveAndWait(Vector3.new(2552, 20, -2604))
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
-task.wait(2)
+task.wait(3)
 game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(Vector3.new(2623, 66, -2700)))
 local player, character, humanoid, targetPart = game.Players.LocalPlayer, (game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()), (game.Players.LocalPlayer.Character:WaitForChild("Humanoid")), workspace.Map.Structures.Boss1Zone.LanternHanging["Cylinder.006"]; local function lookAtTarget() humanoid.Parent:SetPrimaryPartCFrame(CFrame.new(humanoid.Parent.Head.Position, humanoid.Parent.Head.Position + (targetPart.Position - humanoid.Parent.Head.Position).unit)) end; lookAtTarget()
 task.wait(10)
@@ -98,6 +98,7 @@ game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false,
 task.wait(25)
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+task.wait(3)
 moveAndWait(Vector3.new(2518, 38, -2735))
 
 else
