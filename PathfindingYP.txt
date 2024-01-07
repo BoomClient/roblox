@@ -77,6 +77,8 @@ game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false,
 game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
 task.wait(2)
 game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(Vector3.new(2623, 66, -2700)))
+local player, character, humanoid, targetPart = game.Players.LocalPlayer, (game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()), (game.Players.LocalPlayer.Character:WaitForChild("Humanoid")), workspace.Map.Structures.Boss1Zone.LanternHanging["Cylinder.006"]; local function lookAtTarget() humanoid.Parent:SetPrimaryPartCFrame(CFrame.new(humanoid.Parent.Head.Position, humanoid.Parent.Head.Position + (targetPart.Position - humanoid.Parent.Head.Position).unit)) end; lookAtTarget()
+
 else
 print('no')
 end
