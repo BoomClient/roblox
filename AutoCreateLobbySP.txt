@@ -1,0 +1,21 @@
+repeat wait() until game:IsLoaded()
+wait()
+local desiredPlaceID = 2414851778
+local currentPlaceID = game.PlaceId
+local args = {
+    [1] = "Steampunk Sewers",
+    [2] = "Nightmare",
+    [3] = 0,
+    [4] = true,
+    [5] = true,
+    [6] = false
+}
+
+
+if currentPlaceID == desiredPlaceID then
+    game:GetService("ReplicatedStorage"):WaitForChild("remotes"):WaitForChild("createLobby"):InvokeServer(unpack(args))
+	wait()
+	game:GetService("ReplicatedStorage"):WaitForChild("remotes"):WaitForChild("startDungeon"):FireServer()
+else
+    print('Incorrect')
+end
