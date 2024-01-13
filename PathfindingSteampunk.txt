@@ -1,0 +1,52 @@
+repeat wait() until game:IsLoaded()
+wait(10)
+local player = game:GetService("Players").LocalPlayer
+local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+local desiredPlaceID = 14363263080
+local currentPlaceID = game.PlaceId
+
+
+local function moveAndWait(position)
+    if humanoid then
+        humanoid:MoveTo(position)
+        humanoid.MoveToFinished:Wait()
+    end
+end
+
+if currentPlaceID == desiredPlaceID then
+moveAndWait(Vector3.new(43, 4, -23))
+moveAndWait(Vector3.new(44, -5, -123))
+moveAndWait(Vector3.new(31, -4, -171))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+moveAndWait(Vector3.new(7, -6, -209))
+moveAndWait(Vector3.new(161, -4, -152))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+moveAndWait(Vector3.new(216, -6, -138))
+moveAndWait(Vector3.new(165, -4, -172))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+moveAndWait(Vector3.new(174, -4, -288))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+moveAndWait(Vector3.new(171, -5, -366))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+moveAndWait(Vector3.new(172, -4, -426))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+moveAndWait(Vector3.new(172, -6, -450))
+moveAndWait(Vector3.new(285, -0, -427))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+moveAndWait(Vector3.new(386, -0, -428))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+moveAndWait(Vector3.new(489, -0, -431))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+moveAndWait(Vector3.new(645, -30, -429))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+moveAndWait(Vector3.new(832, -30, -428))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+moveAndWait(Vector3.new(925, -30, -393))
+moveAndWait(Vector3.new(929, 8, -451))
+moveAndWait(Vector3.new(979, 9, -431))
+moveAndWait(Vector3.new(1182, 9, -430))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+moveAndWait(Vector3.new(1387, -23, -431))
+moveAndWait(Vector3.new(1518, -36, -431))
+game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, game)
+end
