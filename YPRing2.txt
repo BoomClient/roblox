@@ -1,0 +1,19 @@
+while wait() do
+    local ring = game.Workspace:FindFirstChild("ring")
+    
+    if ring then
+        local humanoidRootPart = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+        if humanoidRootPart then
+            local targetPosition = ring.Position
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+            
+            repeat
+                wait()
+            until (humanoidRootPart.Position - targetPosition).magnitude < 5
+
+            wait(0.5)
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(Vector3.new(1907, 213, -2861)))
+        end
+    end
+end

@@ -1,0 +1,5 @@
+repeat wait() until game:IsLoaded()
+wait(10)
+local Player = game.Players.LocalPlayer
+local walkspeed = 32
+Player.Character.Humanoid.WalkSpeed = walkspeed
