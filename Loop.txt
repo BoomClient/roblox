@@ -1,0 +1,58 @@
+-- Reference to the player's character
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Reference to the ArenaTiles
+local arenaTiles = workspace.BossParts["Commander Leonaru"].ArenaTiles
+
+-- Reference to the enemy folder
+local enemyFolder = workspace.dungeon.room9.enemyFolder
+local commanderLeonaru = enemyFolder["Commander Leonaru"]
+
+-- Function to check if the specified enemy is gone
+local function isEnemyGone()
+    return not commanderLeonaru or not commanderLeonaru:IsA("Model") or commanderLeonaru.Parent == nil
+end
+
+-- Function to find the closest tile without an attachment
+local function findClosestTileWithoutAttachment()
+    local closestTile = nil
+    local minDistance = math.huge
+
+    for _, child in pairs(arenaTiles:GetChildren()) do
+        if child:IsA("Model") then
+            for _, grandchild in pairs(child:GetChildren()) do
+                if grandchild:IsA("BasePart") and not hasAttachment(grandchild) then
+                    local distance = (character.HumanoidRootPart.Position - grandchild.Position).magnitude
+                    if distance < minDistance then
+                        minDistance = distance
+                        closestTile = grandchild
+                    end
+                end
+            end
+        end
+    end
+
+    return closestTile
+end
+
+-- Function to move the player to the closest tile without an attachment
+local function moveToClosestTileWithoutAttachment()
+    local closestTile = findClosestTileWithoutAttachment()
+
+    if closestTile then
+        humanoid.WalkToPoint = closestTile.Position
+        print("Moving to the closest tile without attachment:", closestTile.Name)
+    else
+        print("No tile without attachment found.")
+    end
+end
+
+-- Main loop
+while not isEnemyGone() do
+    moveToClosestTileWithoutAttachment()
+    wait(1)  -- Adjust the wait time as needed to avoid performance issues
+end
+
+print("Enemy is gone. Exiting loop.")
